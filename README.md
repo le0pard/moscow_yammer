@@ -15,3 +15,7 @@
     
     
     http://moscow-yammer.couchdb:5984/
+
+## App.js
+
+    coffee -c app.coffee
