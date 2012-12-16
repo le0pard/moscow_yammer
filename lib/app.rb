@@ -55,22 +55,18 @@ class SHTTilt < Tilt::Template
 
   def evaluate(scope, locals, &block)
     context = ExecJS.compile(Pathname(__FILE__).dirname.join('..','assets', 'javascripts', 'vendors').join('handlebars-1.0.rc.1.js').read)
-    templateString = context.eval("Handlebars.compile(#{data.inspect})")
     template_key = path_to_key scope
-    <<-HoganTemplate
+    <<-HBTemplate
 (function() { 
-#{namespace} || (#{namespace} = {});
-#{namespace}CachedTemplates || (#{namespace}CachedTemplates = {});
-#{namespace}CachedTemplates[#{template_key.inspect}] = #{templateString};
-#{namespace}[#{template_key.inspect}] = function(object) {
-  if (object == null){
-    return SHTCachedTemplates[#{template_key.inspect}];
-  } else {
-    return SHTCachedTemplates[#{template_key.inspect}](object);
-  }
-};
+Handlebars.templates = Handlebars.templates || {};
+Handlebars.templates[#{template_key.inspect}] = Handlebars.template(#{context.call("Handlebars.precompile", data, { :knownHelpers => known_helpers })});
+Handlebars.registerPartial(#{template_key.inspect}, Handlebars.templates[#{template_key.inspect}]);
 }).call(this);
-    HoganTemplate
+    HBTemplate
+  end
+  
+  def known_helpers
+    nil
   end
   
   def path_to_key(scope)
@@ -110,7 +106,7 @@ class MoscowYammerServer < Sinatra::Application
     include AssetHelpers
   end
 
-  get /\/(public|vendor)\/(.*)/ do
+  get /\/(attachments|public|vendor)\/(.*)/ do
     filename = File.join(params['captures'][0], params['captures'][1])
     content_type File.extname(filename)
     read_relative_file '..', filename
