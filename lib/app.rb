@@ -58,9 +58,9 @@ class SHTTilt < Tilt::Template
     template_key = path_to_key scope
     <<-HBTemplate
 (function() { 
-Handlebars.templates = Handlebars.templates || {};
-Handlebars.templates[#{template_key.inspect}] = Handlebars.template(#{context.call("Handlebars.precompile", data, { :knownHelpers => known_helpers })});
-Handlebars.registerPartial(#{template_key.inspect}, Handlebars.templates[#{template_key.inspect}]);
+Ember.TEMPLATES = Ember.TEMPLATES || {};
+Ember.TEMPLATES[#{template_key.inspect}] = Handlebars.template(#{context.call("Handlebars.precompile", data, { :knownHelpers => known_helpers })});
+Handlebars.registerPartial(#{template_key.inspect}, Ember.TEMPLATES[#{template_key.inspect}]);
 }).call(this);
     HBTemplate
   end

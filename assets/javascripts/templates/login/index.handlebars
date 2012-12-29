@@ -1,0 +1,4 @@
+<span id="yammerLogin"></span>
+<script> 
+  yam.connect.loginButton('#yammerLogin', function (resp) { if (resp.authResponse) { document.getElementById('yammerLogin').innerHTML = 'Welcome to Yammer!'; } });
+</script>

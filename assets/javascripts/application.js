@@ -2,7 +2,8 @@
 //=require ./vendors/jquery.couch
 //
 //=require ./vendors/handlebars-1.0.rc.1
+//=require ./vendors/ember-1.0.0-pre.2
 //= require_tree ./templates
 //
-//=require ./vendors/ember-1.0.0-pre.2.min
 //
+//=require ./app
