@@ -5,5 +5,14 @@
 //=require ./vendors/ember-1.0.0-pre.2
 //= require_tree ./templates
 //
-//
 //=require ./app
+//
+//=require_tree ./models
+//=require_tree ./controllers
+//=require_tree ./views
+//=require_tree ./helpers
+//=require_tree ./templates
+//=require_tree ./routes
+//=require_self
+
+App.initialize()

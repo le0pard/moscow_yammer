@@ -1,13 +1,9 @@
-App = Ember.Application.create
+root = global ? window
+root.App = Ember.Application.create
   VERSION: '1.0'
   rootElement: '#mainContainer'
+  ApplicationController: Ember.Controller.extend()
+  ApplicationView: Ember.View.extend
+    templateName: 'application'
   ready: ->
-    console.log "ready"
-
-#= require ./store
-#= require_tree ./models
-#= require_tree ./controllers
-#= require_tree ./views
-#= require_tree ./helpers
-#= require_tree ./templates
-#= require_tree ./routes
+    console.log "Created App namespace"

@@ -1,7 +1,13 @@
-App.Group = DS.Model.extend
-  title: DS.attr('string')
-  body: DS.attr('string')
-  published: DS.attr('boolean')
+App.Group = Ember.Object.extend()
+App.Group.reopenClass
+  allGroups: []
   find: ->
-    console.log "123123"
-    []
+    $.ajax
+      url: "https://api.github.com/repos/emberjs/ember.js/contributors"
+      dataType: "jsonp"
+      context: this
+      success: (response) ->
+        response.data.forEach ((group) ->
+          @allGroups.addObject App.Group.create(group)
+        ), this
+    @allGroups

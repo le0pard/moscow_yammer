@@ -13,8 +13,6 @@ App.Router = Ember.Router.extend
       initialState: 'index'
       # EVENTS
       showThread: Ember.Route.transitionTo 'show'
-      editThread: Ember.Route.transitionTo 'edit'
-      newThread: Ember.Route.transitionTo 'new'
       # STATES
       index: Ember.Route.extend
         # SETUP
