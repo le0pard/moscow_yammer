@@ -1,21 +1,25 @@
-App.Router = Ember.Router.extend
+App.Router = Em.Router.extend
   enableLogging: true
   location: 'hash'
-  root: Ember.Route.extend
-    index: Ember.Route.extend
+  root: Em.Route.extend
+    index: Em.Route.extend
       # SETUP
       route: '/'
       redirectsTo: 'groups'
-
-    groups: Ember.Route.extend
+    groups: Em.Route.extend
       # SETUP
       route: '/groups'
       initialState: 'index'
       # EVENTS
-      showThread: Ember.Route.transitionTo 'show'
+      showGroup: Em.Route.transitionTo 'show'
       # STATES
-      index: Ember.Route.extend
+      index: Em.Route.extend
         # SETUP
         route: '/'
         connectOutlets: (router) ->
           router.get('applicationController').connectOutlet('groups', App.Group.find())
+      show: Em.Route.extend
+        # SETUP
+        route: '/:group_id'
+        connectOutlets: (router, group) ->
+          router.get('groupsController').connectOutlet('group', group)

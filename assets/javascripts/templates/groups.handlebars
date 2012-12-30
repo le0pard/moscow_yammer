@@ -1,8 +1,10 @@
 <div class='six columns'>
-  <a class='button'>New Post</a>
-  <ul class='posts'>
-    {{#each person in controller}}
-      {{person.login}}
+  <div class='groups'>
+    {{#each group in controller}}
+      <a {{action showGroup group href=true}}>{{group.login}}</a>
     {{/each}}
-  </ul>
+  </div>
+</div>
+<div class="six columns">
+  {{outlet}}
 </div>

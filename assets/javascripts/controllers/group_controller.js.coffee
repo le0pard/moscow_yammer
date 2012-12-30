@@ -1,0 +1,1 @@
+App.GroupController = Em.ObjectController.extend()

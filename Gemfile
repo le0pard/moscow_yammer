@@ -21,6 +21,7 @@ gem 'tilt'
 gem 'execjs'
 gem 'compass'
 gem 'vegas'
+gem 'barber'
 gem 'zurb-foundation'
 
 # notify

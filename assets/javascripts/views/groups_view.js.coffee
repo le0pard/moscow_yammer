@@ -1,2 +1,2 @@
-App.GroupsView = Ember.View.extend
+App.GroupsView = Em.View.extend
   templateName: 'groups'

@@ -1,1 +1,1 @@
-App.GroupsController = Ember.ArrayController.extend()
+App.GroupsController = Em.ArrayController.extend()

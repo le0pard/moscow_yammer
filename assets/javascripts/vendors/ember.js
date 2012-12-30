@@ -1,5 +1,5 @@
-// Version: v1.0.0-pre.2
-// Last commit: b851567 (2012-10-25 12:56:33 -0700)
+// Version: v1.0.pre-279-gb1c0b4c
+// Last commit: b1c0b4c (2012-10-26 16:31:11 -0700)
 
 
 (function() {
@@ -140,8 +140,8 @@ window.ember_deprecateFunc  = Ember.deprecateFunc("ember_deprecateFunc is deprec
 
 })();
 
-// Version: v1.0.0-pre.2
-// Last commit: b851567 (2012-10-25 12:56:33 -0700)
+// Version: v1.0.pre-279-gb1c0b4c
+// Last commit: b1c0b4c (2012-10-26 16:31:11 -0700)
 
 
 (function() {
@@ -5804,7 +5804,7 @@ Ember.none = function(obj) {
       Ember.empty(undefined);      => true
       Ember.empty('');             => true
       Ember.empty([]);             => true
-      Ember.empty('tobias fÃ¼nke'); => false
+      Ember.empty('tobias fünke'); => false
       Ember.empty([0,1,2]);        => false
 
   @method empty
@@ -7410,7 +7410,7 @@ Ember.Array = Ember.Mixin.create(Ember.Enumerable, /** @scope Ember.Array.protot
   /**
     This returns the objects at the specified indexes, using `objectAt`.
 
-        var arr =Â ['a', 'b', 'c', 'd'];
+        var arr = ['a', 'b', 'c', 'd'];
         arr.objectsAt([0, 1, 2]) => ["a", "b", "c"]
         arr.objectsAt([2, 3, 4]) => ["c", "d", undefined]
 
@@ -19133,7 +19133,7 @@ Ember Routing
 (function() {
 // ==========================================================================
 // Project:   metamorph
-// Copyright: Â©2011 My Company Inc. All rights reserved.
+// Copyright: ©2011 My Company Inc. All rights reserved.
 // ==========================================================================
 
 (function(window) {
@@ -20399,7 +20399,7 @@ EmberHandlebars.registerHelper('bind', function(property, options) {
   @private
 
   Use the `boundIf` helper to create a conditional that re-evaluates
-  whenever the bound value changes.
+  whenever the truthiness of the bound value changes.
 
   ``` handlebars
   {{#boundIf "content.shouldDisplayTitle"}}
@@ -20473,6 +20473,8 @@ EmberHandlebars.registerHelper('with', function(context, options) {
 
 
 /**
+  See `boundIf`
+
   @method if
   @for Ember.Handlebars.helpers
   @param {Function} context
@@ -23147,8 +23149,8 @@ Ember Handlebars
 
 })();
 
-// Version: v1.0.0-pre.2
-// Last commit: b851567 (2012-10-25 12:56:33 -0700)
+// Version: v1.0.pre-279-gb1c0b4c
+// Last commit: b1c0b4c (2012-10-26 16:31:11 -0700)
 
 
 (function() {
