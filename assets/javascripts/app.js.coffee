@@ -4,3 +4,6 @@ root.App = Em.Application.create
   rootElement: '#mainContainer'
   ready: ->
     console.log "Created App namespace"
+    
+#root.App.deferReadiness()
+#root.App.advanceReadiness()
