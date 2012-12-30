@@ -8,5 +8,13 @@ root.App = Em.Application.create
     
 root.App.deferReadiness()
 yam.getLoginStatus (response) ->
-  root.App.currentUser = response if response.authResponse and response.authResponse is true
-  root.App.advanceReadiness()
+  if response.authResponse and response.authResponse is true
+    root.App.currentUser = response
+    yam.request
+      url: "https://www.yammer.com/api/v1/groups.json"
+      method: "GET"
+      success: (data) ->
+        console.log data
+        root.App.advanceReadiness()
+  else
+    root.App.advanceReadiness()
