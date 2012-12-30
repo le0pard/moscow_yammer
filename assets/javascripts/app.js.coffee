@@ -6,5 +6,7 @@ root.App = Em.Application.create
   ready: ->
     console.log "Created App namespace"
     
-#root.App.deferReadiness()
-#root.App.advanceReadiness()
+root.App.deferReadiness()
+yam.getLoginStatus (response) ->
+  root.App.currentUser = response if response.authResponse and response.authResponse is true
+  root.App.advanceReadiness()
