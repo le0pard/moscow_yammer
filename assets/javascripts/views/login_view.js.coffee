@@ -2,8 +2,6 @@ App.LoginView = Em.View.extend
   templateName: 'login'
   didInsertElement: ->
     #@_super()
-    yam.getLoginStatus (response) =>
+    yam.connect.loginButton @$("#yammerLogin"), (resp) =>
       if resp.authResponse
-        console.log "logedin"
-      else
-        console.log "Not logedin"
+        @$("#yammerLogin").text("Welcome to Yammer!")
