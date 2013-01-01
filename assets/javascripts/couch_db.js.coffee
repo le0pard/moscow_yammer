@@ -2,6 +2,9 @@ root = global ? window
 class root.CouchDB
   constructor: (@databaseName, @user) ->
     @db = $.couch.db(@databaseName)
+    @db.compact
+      success: (data) =>
+        # done
   setGroups: (groups, callback = {}) =>
     @db.view "#{@databaseName}/groups",
       include_docs: true
