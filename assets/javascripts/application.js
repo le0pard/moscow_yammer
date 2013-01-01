@@ -1,5 +1,6 @@
 //=require ./vendors/jquery-1.8.3.min
 //=require ./vendors/jquery.couch
+//=require ./vendors/underscore
 //
 //=require ./vendors/handlebars
 //=require ./vendors/ember

@@ -8,3 +8,6 @@ App.Group.reopenClass
     )
   find: ->
     @allGroups
+  findOne: (id) ->
+    _.find @find(), (g) =>
+      parseInt(g.id) is parseInt(id)

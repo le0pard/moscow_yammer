@@ -13,17 +13,15 @@ class root.CouchDB
       success: (data) =>
         allGroups = []
         for group in groups
-          if data.total_rows
-            oldGroup = _.find data.rows, (g) ->
-              g.doc.content.id is group.id
-          else
-            oldGroup = null
           oneGroup = {}
           oneGroup.type = "group"
           oneGroup.content = group
-          if oldGroup
-            oneGroup._id = oldGroup.doc._id
-            oneGroup._rev = oldGroup.doc._rev
+          if data.total_rows
+            oldGroup = _.find data.rows, (g) ->
+              g.doc.content.id is group.id
+            if oldGroup
+              oneGroup._id = oldGroup.doc._id
+              oneGroup._rev = oldGroup.doc._rev
           allGroups.push oneGroup
         @db.bulkSave {docs: allGroups},
           success: (data) =>

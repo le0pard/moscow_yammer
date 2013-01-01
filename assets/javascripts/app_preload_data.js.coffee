@@ -10,6 +10,7 @@ yam.getLoginStatus (response) ->
         App.db.setGroups data,
           success: (groups) ->
             App.Group.prefillGroups(groups)
+            $('#mainContainer').empty()
             root.App.advanceReadiness()
   else
     root.App.advanceReadiness()
