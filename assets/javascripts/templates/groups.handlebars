@@ -1,10 +1,12 @@
-<div class='six columns'>
-  <div class='groups'>
-    {{#each group in controller}}
-      <a {{action showGroup group href=true}}>{{group.full_name}}</a>
-    {{/each}}
+<div class="row">
+  <div class="four columns">
+    <dl class="tabs vertical">
+      {{#each group in controller}}
+        <dd><a {{action showGroup group href=true}}>{{group.full_name}}</a></dd>
+      {{/each}}
+    </dl>
   </div>
-</div>
-<div class="six columns">
-  {{outlet}}
+  <div class="eight columns">
+    {{outlet}}
+  </div>	
 </div>

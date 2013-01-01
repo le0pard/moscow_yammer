@@ -25,4 +25,9 @@ class root.CouchDB
           allGroups.push oneGroup
         @db.bulkSave {docs: allGroups},
           success: (data) =>
-            callback.success.call(null, (group.content for group in allGroups)) if callback? and callback.success?
+            groups = (group.content for group in allGroups)
+            groups = groups.sort (a, b) =>
+              return -1 if (a.full_name < b.full_name)
+              return 1 if (a.full_name > b.full_name)
+              return 0
+            callback.success.call(null, groups) if callback? and callback.success?

@@ -1,3 +1,9 @@
-<h2>{{full_name}}</h2>
+<div class="row tabs">
+  <div class="eight columns">
+    <h3>{{full_name}}</h3>
+  </div>
+  <div class="four columns">
+    <a class="small button" href="#" {{action updateGroupInfo target="controller"}}>Update info</a>
+  </div>
+</div>
 
-<a href="#" {{action updateGroupInfo target="controller"}}>Update info</a>

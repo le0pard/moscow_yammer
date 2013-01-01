@@ -9,6 +9,8 @@ App.Router = Em.Router.extend
   enableLogging: true
   location: 'hash'
   root: Em.Route.extend
+    openIndex: Em.Route.transitionTo 'index'
+
     index: Em.Route.extend
       # SETUP
       route: '/'
