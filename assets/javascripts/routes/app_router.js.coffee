@@ -48,3 +48,8 @@ App.Router = Em.Router.extend
           "login" unless App.currentUser
         connectOutlets: (router, group) ->
           router.get('groupsController').connectOutlet('group', group)
+        deserialize: (router, params) ->
+          for group in App.Group.find()
+            return group if parseInt(group.id) is parseInt(params.group_id)
+        serialize: (router, context) ->
+          { group_id: context.get("id") }

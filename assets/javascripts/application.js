@@ -5,6 +5,9 @@
 //=require ./vendors/ember
 //=require ./vendors/ember-data
 //
+//=require ./yammer_api
+//=require ./couch_db
+//
 //=require ./app
 //
 //=require ./store
@@ -14,3 +17,5 @@
 //=require_tree ./helpers
 //=require_tree ./templates
 //=require_tree ./routes
+//
+//=require app_preload_data

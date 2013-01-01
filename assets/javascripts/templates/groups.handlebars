@@ -1,7 +1,7 @@
 <div class='six columns'>
   <div class='groups'>
-    {{#each group in controller.content}}
-      <a {{action showGroup group href=true}}>{{group.login}}</a>
+    {{#each group in controller}}
+      <a {{action showGroup group href=true}}>{{group.name}}</a>
     {{/each}}
   </div>
 </div>
