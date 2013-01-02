@@ -1,0 +1,1 @@
+App.MainHelpController = Em.Controller.extend()

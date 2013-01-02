@@ -1,17 +1,16 @@
 <div class="nine columns">
   {{outlet}}
 </div>
-
 <!-- Nav Sidebar -->
 <!-- This is source ordered to be pulled to the left on larger screens -->
 <div class="three columns">
   <div class="panel">
-    <h5><a {{action openIndex href=true}}>Main page</a></h5>
+    {{outlet sidebar}}
+    <hr />
     <dl class="vertical tabs">
       {{#each group in controller}}
-        <dd><a {{action showGroup group href=true}}>{{group.full_name}}</a></dd>
+        <dd {{bindAttr class="group.isActive:active"}}><a {{action showGroup group href=true}}>{{group.full_name}}</a></dd>
       {{/each}}
     </dl>
-    
   </div>
 </div>

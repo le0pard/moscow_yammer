@@ -1,4 +1,5 @@
-App.Group = Ember.Object.extend()
+App.Group = Ember.Object.extend
+  isActive: false
 App.Group.reopenClass
   allGroups: []
   prefillGroups: (groups) ->

@@ -1,3 +1,13 @@
+root = global ? window
+root.stateFlag = (name) ->
+  Ember.computed(->
+    state = App.router.currentState
+    while state
+      return true if state.name is name
+      state = state.get("parentState")
+    false
+  ).property "App.router.currentState"
+
 Em.Route.reopen
   setup: ->
     if (beforeFilter = Em.get(@, 'beforeFilter'))? and (redirection = beforeFilter())?
@@ -42,6 +52,9 @@ App.Router = Em.Router.extend
           "login" unless App.currentUser
         connectOutlets: (router) ->
           router.get('applicationController').connectOutlet('groups', App.Group.find())
+          groupsController = router.get('groupsController')
+          groupsController.setActiveGroup()
+          groupsController.connectOutlet('mainHelp')
       show: Em.Route.extend
         # SETUP
         route: '/:group_id'
@@ -49,7 +62,10 @@ App.Router = Em.Router.extend
         beforeFilter: ->
           "login" unless App.currentUser
         connectOutlets: (router, group) ->
-          router.get('groupsController').connectOutlet('group', group)
+          groupsController = router.get('groupsController')
+          groupsController.setActiveGroup(group)
+          groupsController.connectOutlet('group', group)
+          groupsController.connectOutlet('sidebar', 'groupSidebar', group)
         deserialize: (router, params) ->
           App.Group.findOne(params.group_id)
         serialize: (router, context) ->
