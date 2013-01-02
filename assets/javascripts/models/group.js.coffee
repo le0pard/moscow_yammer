@@ -2,7 +2,7 @@ App.Group = Ember.Object.extend()
 App.Group.reopenClass
   allGroups: []
   prefillGroups: (groups) ->
-    @allGroups.clear()
+    @allGroups.clear() if @allGroups.length
     @allGroups.addObjects groups.map((group) ->
       App.Group.create group
     )
@@ -10,4 +10,4 @@ App.Group.reopenClass
     @allGroups
   findOne: (id) ->
     _.find @find(), (g) =>
-      parseInt(g.id) is parseInt(id)
+      parseInt(g.get('id')) is parseInt(id)

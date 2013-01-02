@@ -8,6 +8,7 @@
 //
 //=require ./yammer_api
 //=require ./couch_db
+//=require ./sync_manager
 //
 //=require ./app
 //

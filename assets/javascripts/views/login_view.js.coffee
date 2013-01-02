@@ -3,4 +3,6 @@ App.LoginView = Em.View.extend
   didInsertElement: ->
     #@_super()
     yam.connect.loginButton @$("#yammerLogin"), (resp) =>
-      @$("#yammerLogin").text("Done. Please, reload page.") if resp.authResponse
+      if resp.authResponse
+        @$("#yammerLogin").text("Done. Please, reload page.")
+        location.reload()

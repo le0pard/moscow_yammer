@@ -53,4 +53,4 @@ App.Router = Em.Router.extend
         deserialize: (router, params) ->
           App.Group.findOne(params.group_id)
         serialize: (router, context) ->
-          { group_id: context.get("id") }
+          { group_id: (if context? then context.get("id") else null) }

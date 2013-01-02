@@ -5,6 +5,18 @@ class root.CouchDB
     @db.compact
       success: (data) =>
         # done
+  getGroups: (callback = {}) =>
+    @db.view "#{@databaseName}/groups",
+      include_docs: true
+      error: =>
+        callback.success.call(null, []) if callback? and callback.success?
+      success: (allGroups) =>
+        groups = (group.value for group in allGroups.rows)
+        groups = groups.sort (a, b) =>
+          return -1 if (a.full_name < b.full_name)
+          return 1 if (a.full_name > b.full_name)
+          return 0
+        callback.success.call(null, groups) if callback? and callback.success?
   setGroups: (groups, callback = {}) =>
     @db.view "#{@databaseName}/groups",
       include_docs: true
@@ -25,9 +37,43 @@ class root.CouchDB
           allGroups.push oneGroup
         @db.bulkSave {docs: allGroups},
           success: (data) =>
-            groups = (group.content for group in allGroups)
+            groups = (group.content for group in data)
             groups = groups.sort (a, b) =>
               return -1 if (a.full_name < b.full_name)
               return 1 if (a.full_name > b.full_name)
               return 0
             callback.success.call(null, groups) if callback? and callback.success?
+  getUsers: (callback = {}) =>
+    @db.view "#{@databaseName}/users",
+      include_docs: true
+      error: =>
+        callback.success.call(null, []) if callback? and callback.success?
+      success: (usersData) =>
+        users = (user.value for user in usersData.rows)
+        users = users.sort (a, b) =>
+          return -1 if (a.full_name < b.full_name)
+          return 1 if (a.full_name > b.full_name)
+          return 0
+        callback.success.call(null, users) if callback? and callback.success?
+  setUsers: (users, callback = {}) =>
+    @db.view "#{@databaseName}/users",
+      include_docs: true
+      error: =>
+        callback.success.call(null, []) if callback? and callback.success?
+      success: (data) =>
+        allUsers = []
+        for user in users
+          oneUser = {}
+          oneUser.type = "user"
+          oneUser.content = user
+          if data.total_rows
+            oldUser = _.find data.rows, (u) ->
+              u.doc.content.id is user.id
+            if oldUser
+              oneUser._id = oldUser.doc._id
+              oneUser._rev = oldUser.doc._rev
+          allUsers.push oneUser
+        @db.bulkSave {docs: allUsers},
+          success: (data) =>
+            users = (user.content for user in allUsers)
+            callback.success.call(null, users) if callback? and callback.success?
