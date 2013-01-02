@@ -21,6 +21,11 @@ namespace :assets do
       outfile   = Pathname.new(outpath).join("application.min.js") # may want to use the digest in the future?
       FileUtils.mkdir_p outfile.dirname
       asset.write_to(outfile)
+      # 2 stage
+      asset     = sprockets['worker.js']
+      outfile   = Pathname.new(outpath).join("worker.js") # may want to use the digest in the future?
+      FileUtils.mkdir_p outfile.dirname
+      asset.write_to(outfile)
       puts "successfully compiled js assets"
     rescue => e
       puts "failed compile js assets. Error: #{e.message}"
