@@ -16,5 +16,5 @@ App.Group.reopenClass
   find: ->
     @allGroups
   findOne: (id) ->
-    _.find @find(), (g) =>
+    @allGroups.find (g) =>
       parseInt(g.get('id')) is parseInt(id)

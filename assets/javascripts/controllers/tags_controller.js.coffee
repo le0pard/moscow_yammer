@@ -1,0 +1,1 @@
+App.TagsController = Em.ArrayController.extend()

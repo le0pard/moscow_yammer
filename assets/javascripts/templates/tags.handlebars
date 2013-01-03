@@ -1,0 +1,23 @@
+<h3>Tags</h3>
+<div class="row">
+  <div class="twelve columns">
+    <ol>
+      {{#each tagObject in controller}}
+        <li>
+          <div {{bindAttr class=":main_box tagObject.isDeleting:deleting"}}>
+            <div class="main_view">
+              {{tagObject.name}} ({{tagObject.tag}}), {{tagObject.days}} deadline
+              <a>Edit</a>
+              <a>Delete</a>
+            </div>
+            <div class="delete_view">
+              A you sure want delete this tag?
+              <a>Confirm delete</a>
+              <a>Cancel</a>
+            </div>
+          </div>
+        </li>
+      {{/each}}
+    </ol>
+  </div>
+</div>

@@ -1,13 +1,3 @@
-root = global ? window
-root.stateFlag = (name) ->
-  Ember.computed(->
-    state = App.router.currentState
-    while state
-      return true if state.name is name
-      state = state.get("parentState")
-    false
-  ).property "App.router.currentState"
-
 Em.Route.reopen
   setup: ->
     if (beforeFilter = Em.get(@, 'beforeFilter'))? and (redirection = beforeFilter())?
@@ -20,7 +10,7 @@ App.Router = Em.Router.extend
   location: 'hash'
   root: Em.Route.extend
     # EVENTS
-    openIndex: Em.Route.transitionTo 'root.index'
+    openIndex: Em.Route.transitionTo 'groups'
     openSettings: Em.Route.transitionTo 'settings'
     showGroup: Em.Route.transitionTo 'groups.show'
     # ROUTE
@@ -52,10 +42,8 @@ App.Router = Em.Router.extend
         beforeFilter: ->
           "login" unless App.currentUser
         connectOutlets: (router) ->
-          router.get('applicationController').connectOutlet('groups', App.Group.find())
-          groupsController = router.get('groupsController')
-          groupsController.setActiveGroup()
-          groupsController.connectOutlet('mainHelp')
+          App.Router.initGroups(router)
+          router.get('groupsController').connectOutlet('mainHelp')
       show: Em.Route.extend
         # SETUP
         route: '/:group_id'
@@ -83,7 +71,11 @@ App.Router = Em.Router.extend
         beforeFilter: ->
           "login" unless App.currentUser
         connectOutlets: (router) ->
-          router.get('applicationController').connectOutlet('groups', App.Group.find())
-          groupsController = router.get('groupsController')
-          groupsController.setActiveGroup()
-          groupsController.connectOutlet('settings')
+          App.Router.initGroups(router)
+          router.get('groupsController').connectOutlet('settings')
+          router.get('settingsController').connectOutlet('tags', App.Tag.find())
+
+App.Router.reopenClass
+  initGroups: (router) ->
+    router.get('applicationController').connectOutlet('groups', App.Group.find())
+    router.get('groupsController').setActiveGroup()
