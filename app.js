@@ -47,10 +47,8 @@
 
   ddoc.views.tags = {
     map: function(doc) {
-      var sort_index;
-      sort_index = doc.content.sort_index || 1;
       if (doc.type && doc.type === "tag") {
-        return emit([doc._id, sort_index], doc.content);
+        return emit([doc._id], doc.content);
       }
     }
   };

@@ -10,6 +10,8 @@ App.Tag = Ember.Object.extend
     days = 1 if parseInt(days) < 1 
     @set "days", days
   ).observes("days")
+  toHash: ->
+    @getProperties(['name', 'open_tag', 'close_tag', 'days', 'sort_index'])
 App.Tag.reopenClass
   allTags: []
   prefillTags: (tags) ->

@@ -81,6 +81,7 @@ class root.CouchDB
         callback.success.call(null, []) if callback? and callback.success?
       success: (tags) =>
         tags = (_.extend({id: tag.id}, tag.value) for tag in tags.rows)
+        tags = _.sortBy tags, (tag) -> parseInt(tag.sort_index)
         callback.success.call(null, tags) if callback? and callback.success?
   addTag: (tag, callback = {}) =>
     doc = 
@@ -102,3 +103,25 @@ class root.CouchDB
         @db.removeDoc couchTag,
           success: (data) =>
             callback.success.call(null, data) if callback? and callback.success?
+  updateSortTags: (tags, sortIndex, callback = {}) =>
+    @db.view "#{@databaseName}/tags",
+      include_docs: true
+      error: =>
+        callback.success.call(null, []) if callback? and callback.success?
+      success: (data) =>
+        allTags = []
+        for tag in tags
+          oneTag =
+            type: "tag"
+            content: tag.toHash()
+          if data.total_rows
+            oldTag = _.find data.rows, (t) -> t.id is tag.get('id')
+            if oldTag
+              oneTag._id = oldTag.doc._id
+              oneTag._rev = oldTag.doc._rev
+              oneTag.content.sort_index = (_.indexOf(sortIndex, oneTag._id) + 1) if sortIndex? and _.indexOf(sortIndex, oneTag._id) isnt -1
+          allTags.push oneTag
+        @db.bulkSave {docs: allTags},
+          success: (data) =>
+            tags = (tag.content for tag in allTags)
+            callback.success.call(null, tags) if callback? and callback.success?

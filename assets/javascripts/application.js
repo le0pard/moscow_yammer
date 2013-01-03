@@ -1,4 +1,5 @@
 //=require ./vendors/jquery-1.8.3.min
+//=require ./vendors/jquery-ui-1.8.23.min
 //=require ./vendors/jquery.couch
 //=require ./vendors/underscore
 //

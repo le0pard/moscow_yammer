@@ -1,13 +1,13 @@
 <h3>Tags</h3>
 <div class="row">
   <div class="twelve columns">
-    <ol id="tagsList">
+    <ul id="tagsList">
       {{#each tagObject in controller}}
-        <li>
+        <li {{bindAttr data-tag-id="tagObject.id"}}>
           <div {{bindAttr class=":main_box tagObject.isEditing:editing tagObject.isDeleting:deleting"}}>
             {{#unless tagObject.isNew}}
               <div class="main_view">
-                {{tagObject.name}} ({{tagObject.tag}}), {{tagObject.days}} deadline
+                {{tagObject.name}} ({{tagObject.open_tag}} => {{tagObject.close_tag}}), {{tagObject.days}} deadline
                 <a href="#" {{action openEditMode tagObject target="controller"}}>Edit</a>
                 <a href="#" {{action openDeleteMode tagObject target="controller"}}>Delete</a>
               </div>
@@ -24,10 +24,15 @@
                     {{view Ember.TextField valueBinding="tagObject.name" placeholder="Name"}}
                   </div>
                   <div class="three columns">
-                    {{view Ember.TextField valueBinding="tagObject.tag" placeholder="Tag"}}
+                    {{view Ember.TextField valueBinding="tagObject.open_tag" placeholder="Open Tag"}}
                   </div>
                   <div class="three columns">
-                    {{view App.NumberField valueBinding="tagObject.days" placeholder="Days"}}
+                    {{view Ember.TextField valueBinding="tagObject.close_tag" placeholder="Close Tag"}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="three columns">
+                    {{view App.NumberField valueBinding="tagObject.days" placeholder="Deadline Days"}}
                   </div>
                 </div>
                 <div class="row">

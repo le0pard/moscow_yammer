@@ -18,7 +18,7 @@ App.TagsController = Em.ArrayController.extend
   addTag: (e) ->
     tag = e.context
     return null unless tag?
-    App.db.addTag tag.getProperties(['name', 'tag', 'days', 'sort_index']),
+    App.db.addTag tag.toHash(),
       success: (data) =>
          tag.setProperties
           id: data.id
@@ -28,7 +28,7 @@ App.TagsController = Em.ArrayController.extend
   editTag: (e) ->
     tag = e.context
     return null unless tag?
-    App.db.editTag tag.get('id'), tag.getProperties(['name', 'tag', 'days', 'sort_index']),
+    App.db.editTag tag.get('id'), tag.toHash(),
       success: =>
         @_closeForms(tag)
   deleteTag: (e) ->
