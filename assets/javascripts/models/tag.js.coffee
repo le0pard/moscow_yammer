@@ -2,8 +2,13 @@ App.Tag = Ember.Object.extend
   isNew: false
   isEditing: false
   isDeleting: false
+  # def values
+  days: 1
+  sort_index: 1
   daysChanged: (->
-    @set "days", @get("days").toString().replace(/[^\d]/g, "")
+    days = @get("days").toString().replace(/[^\d]/g, "")
+    days = 1 if parseInt(days) < 1 
+    @set "days", days
   ).observes("days")
 App.Tag.reopenClass
   allTags: []
@@ -12,8 +17,14 @@ App.Tag.reopenClass
     @allTags.addObjects tags.map((tag) ->
       App.Tag.create tag
     )
+  addNewTag: ->
+    @allTags.addObject(App.Tag.create
+      isNew: true
+      isEditing: true
+    )
+  removeTag: (tag) ->
+    @allTags.removeObject tag
   find: ->
     @allTags
   findOne: (id) ->
-    @allTags.find (t) =>
-      parseInt(t.get('id')) is parseInt(id)
+    @allTags.find (t) => parseInt(t.get('id')) is parseInt(id)

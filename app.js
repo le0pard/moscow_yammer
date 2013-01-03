@@ -45,6 +45,16 @@
     }
   };
 
+  ddoc.views.tags = {
+    map: function(doc) {
+      var sort_index;
+      sort_index = doc.content.sort_index || 1;
+      if (doc.type && doc.type === "tag") {
+        return emit([doc._id, sort_index], doc.content);
+      }
+    }
+  };
+
   ddoc.validate_doc_update = function(newDoc, oldDoc, userCtx) {
     if (newDoc._deleted === true && userCtx.roles.indexOf("_admin") === -1) {
       throw "Only admin can delete documents on this database.";

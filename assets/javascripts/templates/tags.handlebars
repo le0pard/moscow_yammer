@@ -1,17 +1,24 @@
 <h3>Tags</h3>
 <div class="row">
   <div class="twelve columns">
-    <ol>
+    <ol id="tagsList">
       {{#each tagObject in controller}}
         <li>
           <div {{bindAttr class=":main_box tagObject.isEditing:editing tagObject.isDeleting:deleting"}}>
-            <div class="main_view">
-              {{tagObject.name}} ({{tagObject.tag}}), {{tagObject.days}} deadline
-              <a href="#" {{action openEditMode tagObject target="controller"}}>Edit</a>
-              <a href="#" {{action openDeleteMode tagObject target="controller"}}>Delete</a>
-            </div>
+            {{#unless tagObject.isNew}}
+              <div class="main_view">
+                {{tagObject.name}} ({{tagObject.tag}}), {{tagObject.days}} deadline
+                <a href="#" {{action openEditMode tagObject target="controller"}}>Edit</a>
+                <a href="#" {{action openDeleteMode tagObject target="controller"}}>Delete</a>
+              </div>
+            {{/unless}}
             <div class="edit_view">
-              <form>
+              {{#if tagObject.isNew}}
+                <form {{action addTag tagObject on="submit" target="controller"}}>
+              {{else}}
+                <form {{action editTag tagObject on="submit" target="controller"}}>
+              {{/if}}
+              <form {{action savePost content on="submit"}}>
                 <div class="row">
                   <div class="six columns">
                     {{view Ember.TextField valueBinding="tagObject.name" placeholder="Name"}}
@@ -26,10 +33,10 @@
                 <div class="row">
                   <div class="six columns">
                     {{#if tagObject.isNew}}
-                      <a class="button" href="#">Add</a>
-                      <a>Cancel</a>
+                      <input type="submit" class="button" value="Add" />
+                      <a href="#" {{action deleteNewTag tagObject target="controller"}}>Cancel</a>
                     {{else}}
-                      <a class="button" href="#" {{action editTag tagObject target="controller"}}>Edit</a>
+                      <input type="submit" class="button" value="Edit" />
                       <a href="#" {{action closeAllMode tagObject target="controller"}}>Cancel</a>
                     {{/if}}
                   </div>
@@ -38,12 +45,13 @@
             </div>
             <div class="delete_view">
               A you sure want delete this tag?
-              <a>Confirm delete</a>
+              <a class="alert button" href="#" {{action deleteTag tagObject target="controller"}}>Confirm delete</a>
               <a href="#" {{action closeAllMode tagObject target="controller"}}>Cancel</a>
             </div>
           </div>
         </li>
       {{/each}}
     </ol>
+    <a class="button" href="#" {{action addNewTag target="controller"}}>Add tag</a>
   </div>
 </div>

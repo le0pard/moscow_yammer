@@ -26,9 +26,9 @@ class root.CouchDB
       success: (data) =>
         allGroups = []
         for group in groups
-          oneGroup = {}
-          oneGroup.type = "group"
-          oneGroup.content = group
+          oneGroup =
+            type: "group"
+            content: group
           if data.total_rows
             oldGroup = _.find data.rows, (g) ->
               g.doc.content.id is group.id
@@ -60,9 +60,9 @@ class root.CouchDB
       success: (data) =>
         allUsers = []
         for user in users
-          oneUser = {}
-          oneUser.type = "user"
-          oneUser.content = user
+          oneUser =
+            type: "user"
+            content: user
           if data.total_rows
             oldUser = _.find data.rows, (u) ->
               u.doc.content.id is user.id
@@ -74,3 +74,31 @@ class root.CouchDB
           success: (data) =>
             users = (user.content for user in allUsers)
             callback.success.call(null, users) if callback? and callback.success?
+  getTags: (callback = {}) =>
+    @db.view "#{@databaseName}/tags",
+      include_docs: true
+      error: =>
+        callback.success.call(null, []) if callback? and callback.success?
+      success: (tags) =>
+        tags = (_.extend({id: tag.id}, tag.value) for tag in tags.rows)
+        callback.success.call(null, tags) if callback? and callback.success?
+  addTag: (tag, callback = {}) =>
+    doc = 
+      type: "tag"
+      content: tag
+    @db.saveDoc doc,
+      success: (data) =>
+        callback.success.call(null, data) if callback? and callback.success?
+  editTag: (docId, tag, callback = {}) =>
+    @db.openDoc docId,
+      success: (couchTag) =>
+        couchTag.content = tag
+        @db.saveDoc couchTag,
+          success: (data) =>
+            callback.success.call(null, data) if callback? and callback.success?
+  deleteTag: (docId, callback = {}) =>
+    @db.openDoc docId,
+      success: (couchTag) =>
+        @db.removeDoc couchTag,
+          success: (data) =>
+            callback.success.call(null, data) if callback? and callback.success?
