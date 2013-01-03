@@ -5,6 +5,11 @@ class root.CouchDB
     @db.compact
       success: (data) =>
         # done
+  _sortGroups: (groups) =>
+    groups.sort (a, b) =>
+      return -1 if (a.full_name < b.full_name)
+      return 1 if (a.full_name > b.full_name)
+      return 0
   getGroups: (callback = {}) =>
     @db.view "#{@databaseName}/groups",
       include_docs: true
@@ -12,11 +17,7 @@ class root.CouchDB
         callback.success.call(null, []) if callback? and callback.success?
       success: (allGroups) =>
         groups = (group.value for group in allGroups.rows)
-        groups = groups.sort (a, b) =>
-          return -1 if (a.full_name < b.full_name)
-          return 1 if (a.full_name > b.full_name)
-          return 0
-        callback.success.call(null, groups) if callback? and callback.success?
+        callback.success.call(null, @_sortGroups(groups)) if callback? and callback.success?
   setGroups: (groups, callback = {}) =>
     @db.view "#{@databaseName}/groups",
       include_docs: true
@@ -37,12 +38,8 @@ class root.CouchDB
           allGroups.push oneGroup
         @db.bulkSave {docs: allGroups},
           success: (data) =>
-            groups = (group.content for group in data)
-            groups = groups.sort (a, b) =>
-              return -1 if (a.full_name < b.full_name)
-              return 1 if (a.full_name > b.full_name)
-              return 0
-            callback.success.call(null, groups) if callback? and callback.success?
+            groups = (group.content for group in allGroups)
+            callback.success.call(null, @_sortGroups(groups)) if callback? and callback.success?
   getUsers: (callback = {}) =>
     @db.view "#{@databaseName}/users",
       include_docs: true

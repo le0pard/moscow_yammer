@@ -20,7 +20,7 @@ App.Router = Em.Router.extend
   location: 'hash'
   root: Em.Route.extend
     openIndex: Em.Route.transitionTo 'index'
-
+    openSettings: Em.Route.transitionTo 'index'
     index: Em.Route.extend
       # SETUP
       route: '/'

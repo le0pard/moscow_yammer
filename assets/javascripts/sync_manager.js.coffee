@@ -19,14 +19,14 @@ root.SyncManager =
   syncUsersAndGroups: (callback = {}) ->
     App.yammerApi.getUsers
       error: ->
-        callback.call(null) if callback?
+        callback.success.call(null) if callback? and callback.success?
       success: (data) ->
         App.db.setUsers data,
           success: (users) ->
             App.User.prefillUsers(users)
             App.yammerApi.getGroups
               error: ->
-                callback.call(null) if callback?
+                callback.success.call(null) if callback? and callback.success?
               success: (data) ->
                 App.db.setGroups data,
                   success: (groups) ->
