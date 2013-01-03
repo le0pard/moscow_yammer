@@ -4,11 +4,37 @@
     <ol>
       {{#each tagObject in controller}}
         <li>
-          <div {{bindAttr class=":main_box tagObject.isDeleting:deleting"}}>
+          <div {{bindAttr class=":main_box tagObject.isEditing:editing tagObject.isDeleting:deleting"}}>
             <div class="main_view">
               {{tagObject.name}} ({{tagObject.tag}}), {{tagObject.days}} deadline
               <a>Edit</a>
               <a>Delete</a>
+            </div>
+            <div class="edit_view">
+              <form>
+                <div class="row">
+                  <div class="six columns">
+                    {{view Ember.TextField valueBinding="tagObject.name" placeholder="Name"}}
+                  </div>
+                  <div class="three columns">
+                    {{view Ember.TextField valueBinding="tagObject.tag" placeholder="Tag"}}
+                  </div>
+                  <div class="three columns">
+                    {{view Ember.TextField valueBinding="tagObject.days" placeholder="Days"}}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="six columns">
+                    {{#if tagObject.isNew}}
+                      <a class="button" href="#">Add</a>
+                      <a>Cancel</a>
+                    {{else}}
+                      <a class="button" href="#">Edit</a>
+                      <a>Cancel</a>
+                    {{/if}}
+                  </div>
+                </div>
+              </form>
             </div>
             <div class="delete_view">
               A you sure want delete this tag?

@@ -1,5 +1,6 @@
 App.Tag = Ember.Object.extend
   isNew: false
+  isEditing: false
   isDeleting: false
 App.Tag.reopenClass
   allTags: []
