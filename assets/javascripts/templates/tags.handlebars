@@ -21,18 +21,22 @@
               <form {{action savePost content on="submit"}}>
                 <div class="row">
                   <div class="six columns">
+                    <label>Name</label>
                     {{view Ember.TextField valueBinding="tagObject.name" placeholder="Name"}}
                   </div>
                   <div class="three columns">
+                    <label>Open Tag</label>
                     {{view Ember.TextField valueBinding="tagObject.open_tag" placeholder="Open Tag"}}
                   </div>
                   <div class="three columns">
+                    <label>Close Tag</label>
                     {{view Ember.TextField valueBinding="tagObject.close_tag" placeholder="Close Tag"}}
                   </div>
                 </div>
                 <div class="row">
                   <div class="three columns">
-                    {{view App.NumberField valueBinding="tagObject.days" placeholder="Deadline Days"}}
+                    <label>Days for deadline</label>
+                    {{view App.NumberField valueBinding="tagObject.days" placeholder="Days for deadline"}}
                   </div>
                 </div>
                 <div class="row">
