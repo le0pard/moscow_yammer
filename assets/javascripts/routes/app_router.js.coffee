@@ -19,8 +19,11 @@ App.Router = Em.Router.extend
   enableLogging: true
   location: 'hash'
   root: Em.Route.extend
-    openIndex: Em.Route.transitionTo 'index'
-    openSettings: Em.Route.transitionTo 'index'
+    # EVENTS
+    openIndex: Em.Route.transitionTo 'root.index'
+    openSettings: Em.Route.transitionTo 'settings'
+    showGroup: Em.Route.transitionTo 'groups.show'
+    # ROUTE
     index: Em.Route.extend
       # SETUP
       route: '/'
@@ -41,8 +44,6 @@ App.Router = Em.Router.extend
       # SETUP
       route: '/groups'
       initialState: 'index'
-      # EVENTS
-      showGroup: Em.Route.transitionTo 'show'
       # STATES
       index: Em.Route.extend
         # SETUP
@@ -70,3 +71,19 @@ App.Router = Em.Router.extend
           App.Group.findOne(params.group_id)
         serialize: (router, context) ->
           { group_id: (if context? then context.get("id") else null) }
+    settings: Em.Route.extend
+      # SETUP
+      route: '/settings'
+      initialState: 'index'
+      # STATES
+      index: Em.Route.extend
+        # SETUP
+        route: '/'
+        # FILTER
+        beforeFilter: ->
+          "login" unless App.currentUser
+        connectOutlets: (router) ->
+          router.get('applicationController').connectOutlet('groups', App.Group.find())
+          groupsController = router.get('groupsController')
+          groupsController.setActiveGroup()
+          groupsController.connectOutlet('settings')
