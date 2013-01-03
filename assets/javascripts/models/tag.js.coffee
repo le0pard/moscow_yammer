@@ -2,6 +2,9 @@ App.Tag = Ember.Object.extend
   isNew: false
   isEditing: false
   isDeleting: false
+  daysChanged: (->
+    @set "days", @get("days").toString().replace(/[^\d]/g, "")
+  ).observes("days")
 App.Tag.reopenClass
   allTags: []
   prefillTags: (tags) ->

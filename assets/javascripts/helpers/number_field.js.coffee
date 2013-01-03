@@ -1,0 +1,1 @@
+App.NumberField = Ember.TextField.extend()

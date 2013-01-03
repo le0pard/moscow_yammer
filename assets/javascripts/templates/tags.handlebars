@@ -7,8 +7,8 @@
           <div {{bindAttr class=":main_box tagObject.isEditing:editing tagObject.isDeleting:deleting"}}>
             <div class="main_view">
               {{tagObject.name}} ({{tagObject.tag}}), {{tagObject.days}} deadline
-              <a>Edit</a>
-              <a>Delete</a>
+              <a href="#" {{action openEditMode tagObject target="controller"}}>Edit</a>
+              <a href="#" {{action openDeleteMode tagObject target="controller"}}>Delete</a>
             </div>
             <div class="edit_view">
               <form>
@@ -20,7 +20,7 @@
                     {{view Ember.TextField valueBinding="tagObject.tag" placeholder="Tag"}}
                   </div>
                   <div class="three columns">
-                    {{view Ember.TextField valueBinding="tagObject.days" placeholder="Days"}}
+                    {{view App.NumberField valueBinding="tagObject.days" placeholder="Days"}}
                   </div>
                 </div>
                 <div class="row">
@@ -29,8 +29,8 @@
                       <a class="button" href="#">Add</a>
                       <a>Cancel</a>
                     {{else}}
-                      <a class="button" href="#">Edit</a>
-                      <a>Cancel</a>
+                      <a class="button" href="#" {{action editTag tagObject target="controller"}}>Edit</a>
+                      <a href="#" {{action closeAllMode tagObject target="controller"}}>Cancel</a>
                     {{/if}}
                   </div>
                 </div>
@@ -39,7 +39,7 @@
             <div class="delete_view">
               A you sure want delete this tag?
               <a>Confirm delete</a>
-              <a>Cancel</a>
+              <a href="#" {{action closeAllMode tagObject target="controller"}}>Cancel</a>
             </div>
           </div>
         </li>
