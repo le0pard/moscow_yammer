@@ -56,7 +56,6 @@ App.Router = Em.Router.extend
           groupsController.connectOutlet('group', group)
           groupsController.connectOutlet('sidebar', 'groupSidebar', group)
           router.get('groupController').connectOutlet('tags', 'groupTags', App.Tag.find())
-          router.get('groupController').connectOutlet('messages', App.Message.find())
         deserialize: (router, params) ->
           App.Group.findOne(params.group_id)
         serialize: (router, context) ->
@@ -69,6 +68,7 @@ App.Router = Em.Router.extend
             "login" unless App.currentUser
           connectOutlets: (router) ->
             router.get('groupTagsController').setActiveTag()
+            router.get('groupController').connectOutlet('messages', App.Message.find(App.GroupsController.currentSelectedGroup))
         tag: Em.Route.extend
           # SETUP
           route: '/:tag_id'
@@ -77,7 +77,7 @@ App.Router = Em.Router.extend
             "login" unless App.currentUser
           connectOutlets: (router, tag) ->
             router.get('groupTagsController').setActiveTag(tag)
-            router.get('groupController').connectOutlet('messages', App.Message.find())
+            router.get('groupController').connectOutlet('messages', App.Message.find(App.GroupsController.currentSelectedGroup, tag))
           deserialize: (router, params) ->
             App.Tag.findOne(params.tag_id)
           serialize: (router, context) ->

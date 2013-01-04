@@ -10,6 +10,8 @@ class root.CouchDB
       return -1 if (a.full_name < b.full_name)
       return 1 if (a.full_name > b.full_name)
       return 0
+  _sortTags: (tags) =>
+    _.sortBy tags, (tag) -> parseInt(tag.sort_index)
   getGroups: (callback = {}) =>
     @db.view "#{@databaseName}/groups",
       include_docs: true
@@ -81,8 +83,7 @@ class root.CouchDB
         callback.success.call(null, []) if callback? and callback.success?
       success: (tags) =>
         tags = (_.extend({id: tag.id}, tag.value) for tag in tags.rows)
-        tags = _.sortBy tags, (tag) -> parseInt(tag.sort_index)
-        callback.success.call(null, tags) if callback? and callback.success?
+        callback.success.call(null, @_sortTags(tags)) if callback? and callback.success?
   addTag: (tag, callback = {}) =>
     doc = 
       type: "tag"
@@ -123,5 +124,5 @@ class root.CouchDB
           allTags.push oneTag
         @db.bulkSave {docs: allTags},
           success: (data) =>
-            tags = (tag.content for tag in allTags)
-            callback.success.call(null, tags) if callback? and callback.success?
+            tags = (_.extend({id: tag._id}, tag.content) for tag in allTags)
+            callback.success.call(null, @_sortTags(tags)) if callback? and callback.success?
