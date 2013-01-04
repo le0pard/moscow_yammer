@@ -1,0 +1,6 @@
+<dl class="tabs">
+  <dd {{bindAttr class="App.GroupsController.currentSelectedGroup.isAllTabActive:active"}}><a {{action showGroup App.GroupsController.currentSelectedGroup href=true}}>All</a></dd>
+  {{#each tagObject in controller}}
+    <dd {{bindAttr class="tagObject.isActive:active"}}><a {{action showTag tagObject href=true}}>{{tagObject.name}}</a></dd>
+  {{/each}}
+</dl>

@@ -2,6 +2,7 @@ App.Tag = Ember.Object.extend
   isNew: false
   isEditing: false
   isDeleting: false
+  isActive: false
   # def values
   days: 1
   sort_index: 1
@@ -29,4 +30,4 @@ App.Tag.reopenClass
   find: ->
     @allTags
   findOne: (id) ->
-    @allTags.find (t) => parseInt(t.get('id')) is parseInt(id)
+    @allTags.find (t) => t.get('id') is id

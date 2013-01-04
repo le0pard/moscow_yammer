@@ -45,20 +45,46 @@ App.Router = Em.Router.extend
           App.Router.initGroups(router)
           router.get('groupsController').connectOutlet('mainHelp')
       show: Em.Route.extend
+        # EVENTS
+        showTag: Em.Route.transitionTo 'tag'
         # SETUP
         route: '/:group_id'
-        # FILTER
-        beforeFilter: ->
-          "login" unless App.currentUser
+        initialState: 'index'
         connectOutlets: (router, group) ->
           groupsController = router.get('groupsController')
           groupsController.setActiveGroup(group)
           groupsController.connectOutlet('group', group)
           groupsController.connectOutlet('sidebar', 'groupSidebar', group)
+          router.get('groupController').connectOutlet('tags', 'groupTags', App.Tag.find())
+          router.get('groupController').connectOutlet('messages', App.Message.find())
         deserialize: (router, params) ->
           App.Group.findOne(params.group_id)
         serialize: (router, context) ->
           { group_id: (if context? then context.get("id") else null) }
+        index: Em.Route.extend
+          # SETUP
+          route: '/'
+          # FILTER
+          beforeFilter: ->
+            "login" unless App.currentUser
+          connectOutlets: (router) ->
+            router.get('groupTagsController').setActiveTag()
+        tag: Em.Route.extend
+          # SETUP
+          route: '/:tag_id'
+          # FILTER
+          beforeFilter: ->
+            "login" unless App.currentUser
+          connectOutlets: (router, tag) ->
+            router.get('groupTagsController').setActiveTag(tag)
+            router.get('groupController').connectOutlet('messages', App.Message.find())
+          deserialize: (router, params) ->
+            App.Tag.findOne(params.tag_id)
+          serialize: (router, context) ->
+            { 
+              tag_id: (if context? then context.get("id") else null), 
+              group_id: (if App.GroupsController.currentSelectedGroup? then App.GroupsController.currentSelectedGroup.get('id') else null) 
+            }
     settings: Em.Route.extend
       # SETUP
       route: '/settings'

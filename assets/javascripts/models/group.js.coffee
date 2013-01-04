@@ -1,5 +1,8 @@
 App.Group = Ember.Object.extend
   isActive: false
+  isAllTabActive: (->
+    App.Tag.allTags.every (tag) => tag.get('isActive') is false
+  ).property('App.Tag.allTags.@each.isActive')
 App.Group.reopenClass
   allGroups: []
   prefillGroups: (groups) ->

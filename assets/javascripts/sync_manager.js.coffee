@@ -15,7 +15,10 @@ root.SyncManager =
           App.db.getUsers
             success: (users) ->
               App.User.prefillUsers(users)
-              SyncManager.finishedLoading()
+              App.db.getTags
+                success: (tags) =>
+                  App.Tag.prefillTags(tags)
+                  SyncManager.finishedLoading()
   syncUsersAndGroups: (callback = {}) ->
     App.yammerApi.getUsers
       error: ->
