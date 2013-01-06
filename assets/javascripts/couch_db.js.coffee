@@ -138,11 +138,15 @@ class root.CouchDB
     @db.bulkSave {docs: messages},
       success: (data) =>
         callback.success.call(null, data) if callback? and callback.success?
-  getMessagesByGroup: (group, callback = {}) ->
-    @db.view "#{@databaseName}/messages_by_group",
+  getMessagesByGroupAndTag: (group, tag, callback = {}) ->
+    viewName = if tag? then "#{@databaseName}/messages_by_group_and_tag" else "#{@databaseName}/messages_by_group"
+    endKey = if tag? then [group.get('id'), "##{tag.get('open_tag').toLowerCase()}"] else [group.get('id')]
+    startKey = _.clone(endKey)
+    startKey.push({})
+    @db.view viewName,
       include_docs: true
-      startkey: [group.get('id'), {}]
-      endkey: [group.get('id')]
+      startkey: startKey
+      endkey: endKey
       stale: "update_after"
       descending: true
       limit: 100

@@ -77,6 +77,31 @@
     }
   };
 
+  ddoc.views.messages_by_group_and_tag = {
+    map: function(doc) {
+      var created_at, tag, _i, _len, _ref, _results;
+      if (!(doc.type && doc.type === "message")) {
+        return false;
+      }
+      if (!(doc.content.all_tags && doc.content.all_tags.length)) {
+        return false;
+      }
+      created_at = (new Date()).getTime();
+      try {
+        created_at = Date.parse(doc.content.last_message.created_at);
+      } catch (error) {
+        created_at = (new Date()).getTime();
+      }
+      _ref = doc.content.all_tags;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        tag = _ref[_i];
+        _results.push(emit([doc.content.group_id, tag, created_at], doc.content));
+      }
+      return _results;
+    }
+  };
+
   ddoc.validate_doc_update = function(newDoc, oldDoc, userCtx) {
     if (newDoc._deleted === true && userCtx.roles.indexOf("_admin") === -1) {
       throw "Only admin can delete documents on this database.";

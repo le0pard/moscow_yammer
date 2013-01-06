@@ -69,13 +69,18 @@ root.SyncManager =
         error: ->
           setTimeout(SyncManager.fetchChildMsgForGroup, 5000)
         success: (data) ->
+          allTags = []
           last_message = _.clone(SyncManager.collectedGroupMessages[SyncManager.mainIterator])
+          allTags = allTags.concat(SyncManager.collectedGroupMessages[SyncManager.mainIterator].tags) if SyncManager.collectedGroupMessages[SyncManager.mainIterator].tags?
           messages = _.reject data.messages, (message) -> parseInt(msg.id) is parseInt(message.id)
           SyncManager.collectedGroupMessages[SyncManager.mainIterator].messages = _.map messages, (message) ->
-            SyncManager._collectTagInMsg(message)
+            tmpMsg = SyncManager._collectTagInMsg(message)
+            allTags = allTags.concat(tmpMsg.tags) if tmpMsg.tags?
+            tmpMsg
           if SyncManager.collectedGroupMessages[SyncManager.mainIterator].messages? and SyncManager.collectedGroupMessages[SyncManager.mainIterator].messages.length
             last_message = _.clone(SyncManager.collectedGroupMessages[SyncManager.mainIterator].messages[0])
           SyncManager.collectedGroupMessages[SyncManager.mainIterator].last_message = last_message
+          SyncManager.collectedGroupMessages[SyncManager.mainIterator].all_tags = _.uniq(allTags)
           SyncManager.mainIterator = SyncManager.mainIterator + 1
           setTimeout(SyncManager.fetchChildMsgForGroup, 3000)
           # PERCENT

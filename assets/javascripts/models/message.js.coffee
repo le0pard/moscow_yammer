@@ -13,7 +13,7 @@ App.Message.reopenClass
     )
   find: (group, tag = null) ->
     @allMessages.clear() if @allMessages.length
-    App.db.getMessagesByGroup group,
+    App.db.getMessagesByGroupAndTag group, tag,
       success: (messages) =>
         @prefillMessages(messages)
     @allMessages

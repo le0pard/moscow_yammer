@@ -4,4 +4,4 @@ App.GroupSidebarController = Em.ObjectController.extend
     return null unless group?
     SyncManager.fetchMessagesFromGroup group,
       success: ->
-        console.log "Done"
+        App.Message.find(App.GroupsController.currentSelectedGroup, App.GroupTagsController.currentSelectedTag)
