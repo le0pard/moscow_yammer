@@ -43,6 +43,7 @@ root.SyncManager =
   fetchMessagesFromGroup: (group, callback = {}) ->
     return false if SyncManager.isSyncGroup isnt null
     SyncManager.isSyncGroup = group
+    SyncManager.isSyncGroup.set('isLoadingData', true)
     SyncManager.mainCallback = callback
     yam.request
       url: "/api/v1/messages/in_group/#{SyncManager.isSyncGroup.get('id')}"
@@ -68,9 +69,13 @@ root.SyncManager =
         error: ->
           setTimeout(SyncManager.fetchChildMsgForGroup, 5000)
         success: (data) ->
+          last_message = _.clone(SyncManager.collectedGroupMessages[SyncManager.mainIterator])
           messages = _.reject data.messages, (message) -> parseInt(msg.id) is parseInt(message.id)
           SyncManager.collectedGroupMessages[SyncManager.mainIterator].messages = _.map messages, (message) ->
             SyncManager._collectTagInMsg(message)
+          if SyncManager.collectedGroupMessages[SyncManager.mainIterator].messages? and SyncManager.collectedGroupMessages[SyncManager.mainIterator].messages.length
+            last_message = _.clone(SyncManager.collectedGroupMessages[SyncManager.mainIterator].messages[0])
+          SyncManager.collectedGroupMessages[SyncManager.mainIterator].last_message = last_message
           SyncManager.mainIterator = SyncManager.mainIterator + 1
           setTimeout(SyncManager.fetchChildMsgForGroup, 3000)
     else
@@ -91,6 +96,7 @@ root.SyncManager =
           oneMsg
         App.db.saveMessages allMessages,
           success: (messages) ->
+            SyncManager.isSyncGroup.set('isLoadingData', false)
             SyncManager.isSyncGroup = null
             if SyncManager.mainCallback? and SyncManager.mainCallback.success?
               SyncManager.mainCallback.success.call(null)

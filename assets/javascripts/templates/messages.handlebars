@@ -1,60 +1,54 @@
-<!-- Feed Entry -->
-<div class="row">
-  <div class="two columns mobile-one"><img src="http://placehold.it/80x80&text=[img]" /></div>
-  <div class="ten columns">
-    <p><strong>Some Person said:</strong> Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong.</p>
-    <ul class="link-list">
-      <li><a href="">Reply</a></li>
-      <li><a href="">Share</a></li>
-    </ul>
-    
-    
-    <h6>2 Comments</h6>
-    <div class="row">
-      <div class="two columns mobile-one"><img src="http://placehold.it/50x50&text=[img]" /></div>
-      <div class="ten columns"><p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit</p></div>
+{{#each msg in controller}}
+  <div class="row">
+    <div class="two columns mobile-one">
+      {{#if msg.sender}}
+        <img {{bindAttr src="msg.sender.mugshot_url"}} />
+      {{else}}
+        <img src="http://placehold.it/48x48&text=[img]" />
+      {{/if}}
     </div>
-    <div class="row">
-      <div class="two columns mobile-one"><img src="http://placehold.it/50x50&text=[img]" /></div>
-      <div class="ten columns"><p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit</p></div>
-    </div>
-  </div>
-</div>
-<!-- End Feed Entry -->
-
-<hr />
-
-<!-- Feed Entry -->
-<div class="row">
-  <div class="two columns mobile-one"><img src="http://placehold.it/80x80&text=[img]" /></div>
-  <div class="ten columns">
-    <p><strong>Some Person said:</strong> Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong.</p>
-    <ul class="link-list">
-      <li><a href="">Reply</a></li>
-      <li><a href="">Share</a></li>
-    </ul>
-  </div>
-</div>
-<!-- End Feed Entry -->
-
-<hr />
-
-<!-- Feed Entry -->
-<div class="row">
-  <div class="two columns mobile-one"><img src="http://placehold.it/80x80&text=[img]" /></div>
-  <div class="ten columns">
-    <p><strong>Some Person said:</strong> Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit, dolore aliqua non est magna in labore pig pork biltong.</p>
-    <ul class="link-list">
-      <li><a href="">Reply</a></li>
-      <li><a href="">Share</a></li>
-    </ul>
-    
-    
-    <h6>2 Comments</h6>
-    <div class="row">
-      <div class="two columns mobile-one"><img src="http://placehold.it/50x50&text=[img]" /></div>
-      <div class="ten columns"><p>Bacon ipsum dolor sit amet nulla ham qui sint exercitation eiusmod commodo, chuck duis velit. Aute in reprehenderit</p></div>
+    <div class="ten columns">
+      <p>
+        <strong>
+          {{#if msg.sender}}
+            {{msg.sender.full_name}}
+          {{/if}}
+           said:</strong> 
+        {{{textToBr msg}}}
+      </p>
+      <!--<ul class="link-list">
+        <li><a href="">Reply</a></li>
+        <li><a href="">Share</a></li>
+      </ul>-->
+      
+      {{#if msg.messages}}
+        {{#if msg.messages.length}}
+          <h6>{{msg.messages.length}} Replies</h6>
+          {{#each replMsg in msg.messages}}
+            <div class="row">
+              <div class="two columns mobile-one">
+                {{#if replMsg.sender}}
+                  <img {{bindAttr src="replMsg.sender.mugshot_url"}} />
+                {{else}}
+                  <img src="http://placehold.it/48x48&text=[img]" />
+                {{/if}}
+              </div>
+              <div class="ten columns">
+                <p>
+                  <strong>
+                    {{#if replMsg.sender}}
+                      {{replMsg.sender.full_name}}
+                    {{/if}}
+                     said:</strong>
+                  {{{textToBr replMsg}}}
+                </p>
+              </div>
+            </div>
+          {{/each}}
+        {{/if}}
+      {{/if}}
     </div>
   </div>
-</div>
-<!-- End Feed Entry -->
+
+  <hr />
+{{/each}}

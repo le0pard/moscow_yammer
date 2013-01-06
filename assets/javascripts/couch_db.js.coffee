@@ -138,3 +138,13 @@ class root.CouchDB
     @db.bulkSave {docs: messages},
       success: (data) =>
         callback.success.call(null, data) if callback? and callback.success?
+  getMessagesByGroup: (group, callback = {}) ->
+    @db.view "#{@databaseName}/messages_by_group",
+      include_docs: true
+      startkey: [group.get('id'), {}]
+      endkey: [group.get('id')]
+      stale: "update_after"
+      descending: true
+      success: (data) ->
+        messages = (msg.value for msg in data.rows)
+        callback.success.call(null, messages) if callback? and callback.success?
