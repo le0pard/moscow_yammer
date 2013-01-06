@@ -79,7 +79,6 @@ root.SyncManager =
     ids = _.map SyncManager.collectedGroupMessages, (msg) -> msg.id
     App.db.getMessagesByIds ids,
       success: (messages) ->
-        console.log messages
         allMessages = _.map SyncManager.collectedGroupMessages, (msg) ->
           oneMsg =
             type: "message"
