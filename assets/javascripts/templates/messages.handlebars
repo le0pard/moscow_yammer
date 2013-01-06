@@ -16,10 +16,9 @@
            said:</strong> 
         {{{textToBr msg}}}
       </p>
-      <!--<ul class="link-list">
-        <li><a href="">Reply</a></li>
-        <li><a href="">Share</a></li>
-      </ul>-->
+      <ul class="link-list">
+        <li><a {{bindAttr href="msg.web_url"}} target="_blank">Reply</a></li>
+      </ul>
       
       {{#if msg.messages}}
         <h6>{{msg.messages.length}} Replies</h6>

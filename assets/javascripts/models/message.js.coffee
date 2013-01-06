@@ -8,7 +8,7 @@ App.Message.reopenClass
     @allMessages.clear() if @allMessages.length
     @allMessages.addObjects messages.map((message) =>
       message.sender = @_findSender(message)
-      message.messages = (_.extend(replMsg, {sender: @_findSender(message)}) for replMsg in message.messages) if message.messages? and message.messages.length
+      message.messages = (_.extend(replMsg, {sender: @_findSender(replMsg)}) for replMsg in message.messages) if message.messages? and message.messages.length
       App.Message.create message
     )
   find: (group, tag = null) ->
