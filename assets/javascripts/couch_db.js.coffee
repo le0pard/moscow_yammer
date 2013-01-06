@@ -145,6 +145,7 @@ class root.CouchDB
       endkey: [group.get('id')]
       stale: "update_after"
       descending: true
+      limit: 100
       success: (data) ->
         messages = (msg.value for msg in data.rows)
         callback.success.call(null, messages) if callback? and callback.success?
