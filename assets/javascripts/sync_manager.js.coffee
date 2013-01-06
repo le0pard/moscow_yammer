@@ -43,7 +43,7 @@ root.SyncManager =
   fetchMessagesFromGroup: (group, callback = {}) ->
     return false if SyncManager.isSyncGroup isnt null
     SyncManager.isSyncGroup = group
-    SyncManager.isSyncGroup.set('isLoadingData', true)
+    SyncManager.isSyncGroup.setProperties({'isLoadingData': true, 'progressGroupStyle': 'width: 0'})
     SyncManager.mainCallback = callback
     yam.request
       url: "/api/v1/messages/in_group/#{SyncManager.isSyncGroup.get('id')}"
@@ -78,6 +78,10 @@ root.SyncManager =
           SyncManager.collectedGroupMessages[SyncManager.mainIterator].last_message = last_message
           SyncManager.mainIterator = SyncManager.mainIterator + 1
           setTimeout(SyncManager.fetchChildMsgForGroup, 3000)
+          # PERCENT
+          percent = Math.ceil((SyncManager.mainIterator / SyncManager.collectedGroupMessages.length) * 100)
+          percent = 100 if percent > 100
+          SyncManager.isSyncGroup.set('progressGroupStyle', "width: #{percent}%")
     else
       SyncManager.saveGroupMsgData()
   saveGroupMsgData: ->
@@ -96,12 +100,13 @@ root.SyncManager =
           oneMsg
         App.db.saveMessages allMessages,
           success: (messages) ->
-            SyncManager.isSyncGroup.set('isLoadingData', false)
+            SyncManager.isSyncGroup.setProperties({'isLoadingData': false})
             SyncManager.isSyncGroup = null
             if SyncManager.mainCallback? and SyncManager.mainCallback.success?
               SyncManager.mainCallback.success.call(null)
               SyncManager.mainCallback = null
   _collectTagInMsg: (msg) ->
     msg.tags = msg.body.plain.match(/#(\S+)/gi) if msg.body and msg.body.plain and msg.body.plain.length
+    msg.tags = (tag.toLowerCase() for tag in msg.tags) if msg.tags? and msg.tags.length
     msg
     

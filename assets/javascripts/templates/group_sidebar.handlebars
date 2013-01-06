@@ -3,3 +3,11 @@
     <a {{bindAttr class=":small :button isLoadingData:disabled"}} href="#" {{action updateGroupInfo target="controller"}}>Update info</a>
   </div>
 </div>
+{{#if isLoadingData}}
+  <hr />
+  <div class="row">
+    <div class="progress success twelve">
+      <span class="meter" {{bindAttr style="progressGroupStyle"}}></span>
+    </div>
+  </div> 
+{{/if}} 

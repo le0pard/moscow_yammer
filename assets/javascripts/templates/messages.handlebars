@@ -1,13 +1,13 @@
 {{#each msg in controller}}
   <div class="row">
-    <div class="two columns mobile-one">
+    <div class="two columns">
       {{#if msg.sender}}
         <img {{bindAttr src="msg.sender.mugshot_url"}} />
       {{else}}
         <img src="http://placehold.it/48x48&text=[img]" />
       {{/if}}
     </div>
-    <div class="ten columns">
+    <div class="six columns">
       <p>
         <strong>
           {{#if msg.sender}}
@@ -22,31 +22,35 @@
       </ul>-->
       
       {{#if msg.messages}}
-        {{#if msg.messages.length}}
-          <h6>{{msg.messages.length}} Replies</h6>
-          {{#each replMsg in msg.messages}}
-            <div class="row">
-              <div class="two columns mobile-one">
-                {{#if replMsg.sender}}
-                  <img {{bindAttr src="replMsg.sender.mugshot_url"}} />
-                {{else}}
-                  <img src="http://placehold.it/48x48&text=[img]" />
-                {{/if}}
-              </div>
-              <div class="ten columns">
-                <p>
-                  <strong>
-                    {{#if replMsg.sender}}
-                      {{replMsg.sender.full_name}}
-                    {{/if}}
-                     said:</strong>
-                  {{{textToBr replMsg}}}
-                </p>
-              </div>
+        <h6>{{msg.messages.length}} Replies</h6>
+        {{#each replMsg in msg.messages}}
+          <div class="row">
+            <div class="two columns">
+              {{#if replMsg.sender}}
+                <img {{bindAttr src="replMsg.sender.mugshot_url"}} />
+              {{else}}
+                <img src="http://placehold.it/48x48&text=[img]" />
+              {{/if}}
             </div>
-          {{/each}}
-        {{/if}}
+            <div class="ten columns">
+              <p>
+                <strong>
+                  {{#if replMsg.sender}}
+                    {{replMsg.sender.full_name}}
+                  {{/if}}
+                   said:</strong>
+                {{{textToBr replMsg}}}
+              </p>
+            </div>
+          </div>
+        {{/each}}
       {{/if}}
+    </div>
+    <div class="four columns">
+      <div class="panel">
+        <h5>This is a regular panel.</h5>
+        <p>It has an easy to override visual style, and is appropriately subdued.</p>
+      </div>
     </div>
   </div>
 
