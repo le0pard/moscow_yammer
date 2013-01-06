@@ -126,3 +126,15 @@ class root.CouchDB
           success: (data) =>
             tags = (_.extend({id: tag._id}, tag.content) for tag in allTags)
             callback.success.call(null, @_sortTags(tags)) if callback? and callback.success?
+  getMessagesByIds: (ids, callback = {}) ->
+    ids = _.map ids, (id) -> [id]
+    @db.view "#{@databaseName}/messages_by_id",
+      include_docs: true
+      keys: ids
+      success: (data) =>
+        messages = (msg for msg in data.rows)
+        callback.success.call(null, messages) if callback? and callback.success?
+  saveMessages: (messages, callback = {}) ->
+    @db.bulkSave {docs: messages},
+      success: (data) =>
+        callback.success.call(null, data) if callback? and callback.success?

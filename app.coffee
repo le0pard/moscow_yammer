@@ -29,6 +29,18 @@ ddoc.views.users =
 ddoc.views.tags = 
   map: (doc) ->
     emit [doc._id], doc.content if doc.type and doc.type is "tag"
+ddoc.views.messages_by_id = 
+  map: (doc) ->
+    emit [doc.content.id], doc.content if doc.type and doc.type is "message"
+ddoc.views.messages_by_group = 
+  map: (doc) ->
+    return false unless doc.type and doc.type is "message"
+    created_at = (new Date()).getTime()
+    try
+      created_at = Date.parse(doc.content.last_message.created_at)
+    catch error
+      created_at = (new Date()).getTime()
+    emit [doc.content.group_id, created_at], doc.content
 
 ddoc.validate_doc_update = (newDoc, oldDoc, userCtx) ->
   throw "Only admin can delete documents on this database."  if newDoc._deleted is true and userCtx.roles.indexOf("_admin") is -1
